@@ -17,8 +17,5 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) { 
     return $request->user();
 });
-// Route pour rediriger vers le fournisseur OAuth
-Route::get('/auth/{provider}', [AuthController::class, 'redirectToProvider']); // Route pour rediriger vers le fournisseur OAuth
-Route::get('/auth/{provider}/callback', [AuthController::class, 'handleProviderCallback']); // Route pour gérer le callback OAuth
 
 
