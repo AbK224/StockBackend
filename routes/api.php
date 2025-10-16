@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProductController;
 
 
 /* Route::get('/ping', function () {
@@ -20,5 +21,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // Route pour rediriger vers le fournisseur OAuth
 Route::get('/auth/{provider}', [AuthController::class, 'redirectToProvider']); // Route pour rediriger vers le fournisseur OAuth
 Route::get('/auth/{provider}/callback', [AuthController::class, 'handleProviderCallback']); // Route pour gérer le callback OAuth
+// Routes pour la gestion des produits
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/products', [ProductController::class, 'index']); // Liste tous les produits
+    Route::post('/product', [ProductController::class, 'store']); // Crée un nouveau produit
+    Route::get('/products/{id}', [ProductController::class, 'show']); // Affiche un produit spécifique
+    Route::put('/products/{id}', [ProductController::class, 'update']); // Met à jour un produit spécifique
+    Route::delete('/products/{id}', [ProductController::class, 'destroy']); // Supprime un produit spécifique
+});
 
 
