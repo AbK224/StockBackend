@@ -56,35 +56,4 @@ class AuthController extends Controller
         return response()->json(['message' => 'Successfully logged out']);
     }  
     
-    /* // Redirection vers le fournisseur OAuth (google, facebook, linkedin)
-    public function redirectToProvider($provider)
-    {
-        return Socialite::driver($provider) ->redirect();
-    }
-    // Gestion du callback du fournisseur OAuth
-    public function handleProviderCallback($provider)
-    {
-        try {
-            $socialUser = Socialite::driver($provider)->user();
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Authentication failed'], 401);
-        }
-        // Vérifiez si l'utilisateur existe déjà
-        $user = User::where('email', $socialUser->getEmail())->first();
-        if (!$user) {
-            // Si l'utilisateur n'existe pas, créez-en un nouveau
-            $user = User::create([
-                'name' => $socialUser->getName(),
-                'email' => $socialUser->getEmail(),
-                'password' => Hash::make(uniqid()), // Génère un mot de passe aléatoire
-            ]); 
-        }
-        // Créez un token pour l'utilisateur
-        $token = $user->createToken('auth_token')->plainTextToken;
-        return response()->json([
-            'access_token' => $token,
-            'token_type' => 'Bearer',
-        ]);
-    }      
-            */
-}    
+}  
