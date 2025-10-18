@@ -4,9 +4,20 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use Illuminate\Validation\ValidationException;
+
+
+
+
 
 class ProductController extends Controller
 {
+    
+  /*   public function __construct()
+    {
+        // Appliquer le middleware d'authentification à toutes les méthodes de ce contrôleur
+        $this->middleware('auth:sanctum');
+    }   */ 
     /**
      * Display a listing of the resource.
      */
@@ -14,7 +25,7 @@ class ProductController extends Controller
     {
         // liste all products
 
-        return Product::all();
+        return response()->json(Product::all(), 200);
 
     }
 
@@ -24,21 +35,31 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         // create a new product
-       $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'category_id' => 'required|exists:categories,id',
-            'buying_price' => 'required|numeric|min:0',
-            'selling_price' => 'required|numeric|min:0',
-            'stock_quantity' => 'required|integer|min:0',
-            'treshold_quantity' => 'required|integer|min:0',
-            'supplier_id' => 'nullable|exists:suppliers,id',
-        ]);
-        $product = Product::create($data);
-        // ✅ Réponse en cas de succès
-        return response()->json([
-            'message' => 'Produit ajouté avec succès !',
-            'product' => $product
-        ], 201);
+         try { // Valide les données entrantes
+            $data = $request->validate([
+                'name' => 'required|string|max:255',
+                'category_id' => 'required|exists:categories,id',
+                'buying_price' => 'required|numeric|min:0',
+                'selling_price' => 'required|numeric|min:0',
+                'stock_quantity' => 'required|integer|min:0',
+                'treshold_quantity' => 'required|integer|min:0',
+                'supplier_id' => 'nullable|exists:suppliers,id',
+            ]);
+
+            $product = Product::create($data);
+
+            return response()->json([
+                'message' => '✅ Produit ajouté avec succès !',
+                'product' => $product
+            ], 201);
+
+        } catch (ValidationException $e) {
+            // ⚠️ Retourne les erreurs de validation détaillées
+            return response()->json([
+                'message' => 'Erreur de validation',
+                'errors' => $e->errors()
+            ], 422);
+        }
     }
 
     /**
