@@ -30,4 +30,12 @@ Route::put('/products/{id}', [ProductController::class, 'update']); // Met à jo
 Route::delete('/products/{id}', [ProductController::class, 'destroy']); // Supprime un produit spécifique
 //});
 
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/products', [App\Http\Controllers\ProductController::class, 'index']); // Liste tous les produits
+    Route::post('/products', [App\Http\Controllers\ProductController::class, 'store']); // Crée un nouveau produit
+    Route::get('/products/{id}', [App\Http\Controllers\ProductController::class, 'show']); // Affiche un produit spécifique
+    Route::put('/products/{id}', [App\Http\Controllers\ProductController::class, 'update']); // Met à jour un produit spécifique
+    Route::delete('/products/{id}', [App\Http\Controllers\ProductController::class, 'destroy']); // Supprime un produit spécifique
+});
+
 
