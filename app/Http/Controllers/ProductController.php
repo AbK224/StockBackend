@@ -15,10 +15,7 @@ class ProductController extends Controller
     {
         // List all products
         $products = Product::with('category')->paginate(10); // charge la relation avec la catégorie et pagine les résultats
-        return response()->json([
-            'success' => true,
-            'data' => $products
-        ], 200);
+        return response()->json($products, 200);
     }
 
     /**
