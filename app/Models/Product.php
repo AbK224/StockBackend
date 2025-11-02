@@ -23,4 +23,8 @@ class Product extends Model
     {
         return $this->belongsTo(Category::class); // Each product belongs to one category
     }
+    public function supplier() // Relation with Supplier model
+    {
+        return $this->belongsTo(Supplier::class); // Each product belongs to one supplier
+    }
 }

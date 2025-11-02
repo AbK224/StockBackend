@@ -27,6 +27,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/products/{id}', [App\Http\Controllers\ProductController::class, 'update']); // Met à jour un produit spécifique
     Route::delete('/products/{id}', [App\Http\Controllers\ProductController::class, 'destroy']); // Supprime un produit spécifique
     Route::get('/categories', [App\Http\Controllers\CategoryController::class, 'index']); // Liste toutes les catégories
+    Route::post('/categories', [App\Http\Controllers\CategoryController::class, 'store']); // Crée une nouvelle catégorie
 });
 
 
