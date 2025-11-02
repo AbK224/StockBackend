@@ -25,6 +25,6 @@ class Product extends Model
     }
     public function supplier() // Relation with Supplier model
     {
-        return $this->belongsTo(Supplier::class); // Each product belongs to one supplier
+        return $this->belongsTo(Supplier::class);  // Each product belongs to one supplier
     }
 }
