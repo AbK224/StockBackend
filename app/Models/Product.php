@@ -14,7 +14,7 @@ class Product extends Model
         'buying_price',
         'selling_price',
         'stock_quantity',
-        'threshold_quantity',
+        'treshold_quantity',
         'expiration_date',
         'supplier_id',
     ];

@@ -30,7 +30,7 @@ class ProductController extends Controller
             'buying_price' => 'required|numeric',
             'selling_price' => 'required|numeric',
             'stock_quantity' => 'required|integer',
-            'threshold_quantity' => 'required|integer',
+            'treshold_quantity' => 'required|integer',
             'expiration_date' => 'nullable|date',
             'supplier_id' => 'nullable|exists:suppliers,id', // Foreign key to suppliers table
         ]);
