@@ -14,12 +14,8 @@ class SupplierController extends Controller
     // liste de tous les fournisseurs
     // charger les produits associés :
 
-        $suppliers = Supplier::with('products')->get();
-
-        return response()->json([
-            'success' => true,
-            'data' => $suppliers
-        ], 200);
+        $suppliers = Supplier::with('products')->paginate(10); // Pagination de 10 par page
+        return response()->json($suppliers, 200);
     }
 
     /**

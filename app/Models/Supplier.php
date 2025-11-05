@@ -13,12 +13,13 @@ class Supplier extends Model
         'name',
         'email',
         'phone',
-        'takes_back_returns'
+        'takes_back_returns',
+        'main_product',
     ];
     //
     public function products() // Relation with Product model
     {
-        return $this->hasMany(Product::class);
+        return $this->hasMany(Product::class); // Each supplier has one products
     }
 
     
