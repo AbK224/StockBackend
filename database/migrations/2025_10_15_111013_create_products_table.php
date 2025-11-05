@@ -15,12 +15,13 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade'); // Clé étrangère vers la table categories
+            $table->foreignId('supplier_id')->nullable()->constrained()->onDelete('set null');
+; // Clé étrangère vers la table suppliers
             $table->decimal('buying_price', 10, 2);
             $table->decimal('selling_price',10, 2);
             $table->integer('stock_quantity');
             $table->integer('treshold_quantity'); // Seuil de réapprovisionnement
             $table->date('expiration_date')->nullable(); // Date d'expiration, nullable si non périssable
-            $table->foreignId('supplier_id')->nullable(); // Clé étrangère vers la table suppliers
             $table->timestamps();
         });
     }

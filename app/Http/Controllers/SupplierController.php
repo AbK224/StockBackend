@@ -48,7 +48,8 @@ class SupplierController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:suppliers,email',
             'phone' => 'required|string|max:20',
-            'takes_back_returns' => 'required|boolean'
+            'takes_back_returns' => 'required|boolean',
+            'main_product' => 'nullable|string|max:255'
         ]);
 
         // Création du fournisseur
