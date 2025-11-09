@@ -21,6 +21,11 @@ class Supplier extends Model
     {
         return $this->hasMany(Product::class); // Each supplier has one products
     }
+    
+    public function purchaseOrders()
+    {
+        return $this->hasMany(PurchaseOrder::class);
+    }
 
     
 }

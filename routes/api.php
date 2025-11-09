@@ -37,6 +37,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/suppliers', [SupplierController::class, 'store']); // Crée un nouveau fournisseur
     Route::put('/suppliers/{id}', [SupplierController::class, 'update']);// Met à jour un fournisseur existant
     Route::delete('/suppliers/{id}', [SupplierController::class, 'destroy']); // Supprime un fournisseur
+
+    // pour les commandes d'achat
+    Route::get('/orders', [App\Http\Controllers\PurchaseOrderController::class, 'index']); // Liste toutes les commandes d'achat
+    Route::post('/orders', [App\Http\Controllers\PurchaseOrderController::class, 'store']); // Crée une nouvelle commande d'achat
+    Route::get('/orders/{id}', [App\Http\Controllers\PurchaseOrderController::class, 'show']); // Affiche une commande d'achat spécifique
+    Route::put('/orders/{id}', [App\Http\Controllers\PurchaseOrderController::class, 'update']); // Met à jour une commande d'achat spécifique
+    Route::delete('/orders/{id}', [App\Http\Controllers\PurchaseOrderController::class, 'destroy']); // Supprime une commande d'achat
 });
 
 
