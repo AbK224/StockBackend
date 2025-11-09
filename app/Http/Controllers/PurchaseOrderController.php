@@ -98,29 +98,35 @@ class PurchaseOrderController extends Controller
     {
         //
         $request->validate([
-            'status' => 'nullable|in:pending,confirmed,delivered,delayed,returned',
+            'status' => 'nullable|in:pending,confirmed,received,delayed,returned',
             'expected_delivery_date' => 'nullable|date',
+            'quantity' => 'nullable|integer|min:1',
+            
         ]);
 
         $order = PurchaseOrder::with('product')->findOrFail($id);
-        $oldStatus = $order->status;
+       
 
         DB::beginTransaction(); // Commencer une transaction
 
         try {
+            // mettre à jour le statut et la date prévue si fourni
             $order->update([
                 'status' => $request->status ?? $order->status, // conserver l'ancien statut si non fourni
                 'expected_delivery_date' => $request->expected_delivery_date ?? $order->expected_delivery_date, // conserver l'ancienne date si non fournie
+                'quantity' => $request->quantity ?? $order->quantity,
             ]);
 
-            // 🟢 Si la commande passe à "Delivered" et n’était pas encore reçue :
-            if ($request->status === 'delivered' && !$order->received) {
+            // 🟢 Si la commande passe à "Received" et n’était pas encore reçue :
+            if ($request->status === 'received' && !$order->received) {
                 $product = $order->product;
+
+                  // Incrmenter la quantite du produit
                 $product->stock_quantity += $order->quantity;
                 $product->save();
 
-                $order->received = true;
-                $order->save();
+                // Marquer la commande comme reçue
+                $order->update(['received' => true]);
             }
 
             DB::commit(); // Valider la transaction
