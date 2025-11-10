@@ -105,21 +105,27 @@ class PurchaseOrderController extends Controller
         ]);
 
         $order = PurchaseOrder::with('product')->findOrFail($id);
+        $oldStatus = $order->status;
+        $product = $order->product;
        
 
         DB::beginTransaction(); // Commencer une transaction
 
         try {
-            // mettre à jour le statut et la date prévue si fourni
-            $order->update([
-                'status' => $request->status ?? $order->status, // conserver l'ancien statut si non fourni
-                'expected_delivery_date' => $request->expected_delivery_date ?? $order->expected_delivery_date, // conserver l'ancienne date si non fournie
-                'quantity' => $request->quantity ?? $order->quantity,
-            ]);
+                // mettre à jour les champs de bases
+            // 🔹 Met à jour les champs de base
+            $order->status = $request->status ?? $order->status;
+            $order->expected_delivery_date = $request->expected_delivery_date ?? $order->expected_delivery_date;
 
-            // 🟢 Si la commande passe à "Received" et n’était pas encore reçue :
+            if ($request->has('quantity') && $request->quantity != $order->quantity) {
+                $order->quantity = $request->quantity;
+            }
+
+            /**
+             * 🔸 Cas 1 : Commande passe à "received"
+             * => Ajouter la quantité au stock si pas encore reçue
+             */
             if ($request->status === 'received' && !$order->received) {
-                $product = $order->product;
 
                   // Incrmenter la quantite du produit
                 $product->stock_quantity += $order->quantity;
@@ -128,6 +134,20 @@ class PurchaseOrderController extends Controller
                 // Marquer la commande comme reçue
                 $order->update(['received' => true]);
             }
+
+                /**
+             * 🔸 Cas 2 : Commande était déjà "received" et on repasse à un autre statut
+             * => Retirer la quantité du stock (annulation de la réception)
+             */
+            if ($oldStatus === 'received' && $request->status !== 'received') {
+                if ($product->stock_quantity >= $order->quantity) {
+                    $product->stock_quantity -= $order->quantity;
+                    $product->save();
+                }
+                $order->received = false;
+            }
+
+            $order->save();
 
             DB::commit(); // Valider la transaction
 
