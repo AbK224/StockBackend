@@ -27,5 +27,14 @@ class Supplier extends Model
         return $this->hasMany(PurchaseOrder::class);
     }
 
+    // Attribut calculé: commande en cours
+    public function getOnTheWayCountAttribute()
+    {
+        return $this ->purchaseOrders()
+            ->where('status', '!=', 'received')
+            ->sum('quantity');
+    }
+           
+
     
 }
