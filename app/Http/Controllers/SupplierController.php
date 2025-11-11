@@ -14,7 +14,11 @@ class SupplierController extends Controller
     // liste de tous les fournisseurs
     // charger les produits associés :
 
-        $suppliers = Supplier::with('products')->paginate(10); // Pagination de 10 par page
+        $suppliers = Supplier::with('products')
+            ->withCount(['purchaseOrders as on_the_way_count' => function ($query) {
+                $query->where('status', '!=', 'received');
+            }])
+            ->paginate(10); // Pagination de 10 par page
         return response()->json($suppliers, 200);
     }
 
