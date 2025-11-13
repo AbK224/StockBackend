@@ -82,7 +82,7 @@ class ProductController extends Controller
             'buying_price' => 'sometimes|required|numeric',
             'selling_price' => 'sometimes|required|numeric',
             'stock_quantity' => 'sometimes|required|integer',
-            'threshold_quantity' => 'sometimes|required|integer',
+            'treshold_quantity' => 'sometimes|required|integer',
             'expiration_date' => 'sometimes|nullable|date',
             'supplier_id' => 'sometimes|nullable|exists:suppliers,id', // Foreign key to suppliers table
         ]);
@@ -98,7 +98,7 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Product $product, $id)
+    public function destroy($id)
     {
         //
         $product = Product::findOrFail($id); // Trouve le produit par son ID

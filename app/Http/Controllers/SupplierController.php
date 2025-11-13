@@ -88,7 +88,8 @@ class SupplierController extends Controller
                 Rule::unique('suppliers')->ignore($supplier->id) // Ignore l'email actuel du fournisseur
             ],
             'phone' => 'sometimes|required|string|max:20',
-            'takes_back_returns' => 'sometimes|required|boolean'
+            'takes_back_returns' => 'sometimes|required|boolean',
+            'main_product' => 'nullable|string|max:255',
         ]);
 
         // Mise à jour
